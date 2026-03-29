@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Flight for Dhanu</title>
+    <style>
+        :root {
+            --accent: #ff4d6d;
+            --sky: linear-gradient(to bottom, #2b2d42, #8d99ae, #edf2f4);
+            --gold: #ffb703;
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%; overflow: hidden;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--sky);
+        }
+
+        /* Animated Clouds */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.3;
+            animation: drift linear infinite;
+        }
+        @keyframes drift {
+            from { transform: translateX(110vw); }
+            to { transform: translateX(-20vw); }
+        }
+
+        /* Scenery */
+        .airport-floor {
+            position: absolute; bottom: 0; width: 100%; height: 120px;
+            background: #2b2d42;
+            border-top: 10px solid #3d405b;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* The Plane Container */
+        #plane-box {
+            position: absolute; bottom: 90px; left: 50%;
+            transform: translateX(-50%);
+            transform-origin: 80% 90%; /* Pivot on back wheels */
+            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 5;
+        }
+
+        .plane-body {
+            width: 450px;
+            filter: drop-shadow(15px 15px 20px rgba(0,0,0,0.4));
+        }
+
+        /* Dhanu Character */
+        #dhanu {
+            position: absolute; bottom: 100px; left: -150px;
+            width: 80px; z-index: 10;
+            transition: left 4s cubic-bezier(0.45, 0, 0.55, 1), 
+                        bottom 0.6s ease-in-out;
+        }
+
+        /* UI Elements */
+        .ui-layer {
+            position: relative; z-index: 100;
+            text-align: center; color: white; padding-top: 50px;
+        }
+
+        #start-btn {
+            background: var(--accent);
+            border: none; padding: 20px 50px;
+            color: white; font-size: 24px; font-weight: bold;
+            border-radius: 100px; cursor: pointer;
+            box-shadow: 0 10px 0 #c9184a;
+            transition: all 0.2s;
+        }
+        #start-btn:active { transform: translateY(5px); box-shadow: 0 5px 0 #c9184a; }
+
+        #greeting {
+            font-size: 4rem; margin-top: 20px; opacity: 0;
+            transition: 1s; text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        /* ANIMATION STATES */
+        .is-walking { left: 45% !important; }
+        .is-sitting { 
+            left: 55% !important; 
+            bottom: 220px !important; 
+            transform: scale(0.9);
+        }
+        .plane-tilted {
+            transform: translateX(-50%) rotate(-18deg) !important;
+        }
+
+        /* Screen Shake */
+        .shake { animation: shake 0.5s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: translate(0,0); }
+            25% { transform: translate(-5px, 5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, -5px); }
+        }
+    </style>
+</head>
+<body id="screen">
+
+    <div class="cloud" style="width:100px; height:40px; top:10%; animation-duration: 25s;"></div>
+    <div class="cloud" style="width:150px; height:50px; top:25%; animation-duration: 40s; opacity:0.1;"></div>
+    <div class="cloud" style="width:120px; height:45px; top:15%; animation-duration: 30s; animation-delay: 5s;"></div>
+
+    <div class="ui-layer">
+        <button id="start-btn">Click to Start Dhanu's Journey! ✈️</button>
+        <h1 id="greeting">Safe Flight, Dhanu! 🌟</h1>
+    </div>
+
+    <div class="airport-floor"></div>
+
+    <div id="plane-box">
+        <svg class="plane-body" viewBox="0 0 200 80">
+            <path d="M150,40 L180,5 L195,5 L175,40" fill="#f8f9fa" />
+            <path d="M150,40 L180,5 L185,5 L165,40" fill="#dee2e6" />
+            <path d="M10,50 Q10,30 50,30 L160,30 Q190,30 190,50 Q190,70 160,70 L40,70 Q10,70 10,50" fill="white" />
+            <rect x="50" y="45" width="8" height="10" rx="2" fill="#8ecae6" />
+            <rect x="65" y="45" width="8" height="10" rx="2" fill="#8ecae6" />
+            <rect x="80" y="45" width="8" height="10" rx="2" fill="#8ecae6" />
+            <rect x="95" y="45" width="8" height="10" rx="2" fill="#8ecae6" />
+            <text x="50" y="42" font-size="6" font-weight="bold" fill="#ff4d6d">DHANU AIRLINES</text>
+            <circle cx="50" cy="72" r="6" fill="#1b1d1e" /> <circle cx="140" cy="72" r="6" fill="#1b1d1e" /> </svg>
+    </div>
+
+    <div id="dhanu">
+        <svg viewBox="0 0 60 100">
+            <circle cx="30" cy="25" r="22" fill="#2b2d42" />
+            <circle cx="30" cy="28" r="18" fill="#ffdbac" />
+            <path d="M15,45 L45,45 L50,85 L10,85 Z" fill="#ff4d6d" />
+            <rect x="20" y="85" width="6" height="15" fill="#ffdbac" />
+            <rect x="34" y="85" width="6" height="15" fill="#ffdbac" />
+        </svg>
+    </div>
+
+    <audio id="snd-jet" src="https://www.soundjay.com/transportation/sounds/airplane-take-off-1.mp3"></audio>
+    <audio id="snd-impact" src="https://www.soundjay.com/mechanical/sounds/mechanical-clonk-1.mp3"></audio>
+
+    <script>
+        const btn = document.getElementById('start-btn');
+        const dhanu = document.getElementById('dhanu');
+        const plane = document.getElementById('plane-box');
+        const screen = document.getElementById('screen');
+        const sndJet = document.getElementById('snd-jet');
+        const sndImpact = document.getElementById('snd-impact');
+        const greet = document.getElementById('greeting');
+
+        btn.addEventListener('click', () => {
+            btn.style.opacity = '0';
+            setTimeout(() => btn.style.display = 'none', 500);
+            
+            sndJet.volume = 0.2;
+            sndJet.play();
+
+            // 1. Dhanu walks in
+            dhanu.classList.add('is-walking');
+
+            // 2. Dhanu sits on the plane
+            setTimeout(() => {
+                dhanu.classList.remove('is-walking');
+                dhanu.classList.add('is-sitting');
+
+                // 3. Impact - The Plane Tips and Screen Shakes
+                setTimeout(() => {
+                    plane.classList.add('plane-tilted');
+                    screen.classList.add('shake');
+                    sndImpact.play();
+                    greet.style.opacity = '1';
+
+                    // Remove shake after it's done
+                    setTimeout(() => screen.classList.remove('shake'), 500);
+                }, 500);
+
+            }, 4000);
+        });
+    </script>
+</body>
+</html>
